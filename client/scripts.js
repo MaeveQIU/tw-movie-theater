@@ -25,7 +25,9 @@ const getGenre = (movieList) => {
 const renderGenre = (genreList) => {
   genreList.forEach(element => {
     const newGenre = document.createElement("li");
-    newGenre.innerHTML = `${element}`
+    newGenre.setAttribute("id", `${element}`);
+    newGenre.setAttribute("class", `genre-list`);
+    newGenre.innerHTML = `${element}`;
     document.getElementById("genre-list").appendChild(newGenre);
   })
 }
@@ -44,3 +46,30 @@ const renderMovie = (movieList) => {
 }
 
 renderMovie(movieList);
+
+const clearList = () => {
+  document.getElementById("movies").innerHTML = "";
+}
+
+const filterList = (movieList, genre) => {
+  return movieList.filter(element => element.genres.includes(genre));
+}
+
+
+
+const addEvents = () => {
+  document.addEventListener("click", event => {
+    if(event.target.className === "all-list") {
+      clearList();
+      renderMovie(movieList);
+    }
+    if(event.target.className === "genre-list") {
+      let target = filterList(movieList, event.target.id);
+      clearList();
+      renderMovie(target);
+    }
+
+  });
+}
+
+addEvents();
