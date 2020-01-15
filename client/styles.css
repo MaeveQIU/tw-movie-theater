@@ -38,6 +38,7 @@ a {
   cursor: pointer;
   position: relative;
   left: 765px;
+  top: 4px;
 }
 
 .genres {
@@ -73,7 +74,7 @@ a {
   grid-column-gap: 20px;
   grid-row-gap: 25px;
   text-align: center;
-  margin: 35px 40px;
+  margin: 35px 40px 70px 40px;
 }
 
 #movies div {
@@ -101,5 +102,52 @@ footer {
   color: snow;
   font-size: 12px;
   padding: 15px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
 }
+
+.no-result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-result p{
+  text-align: center;
+  font-family: fantasy;
+  font-size: 48px;
+}
+
+.movie-result {
+  display: flow-root;
+  padding: 20px;
+  border-bottom: 1px dashed #000;
+}
+
+.movie-result img {
+  float: left;
+  height: 250px;
+  padding: 20px;
+}
+
+.movie-result .title {
+  font-size: 24px;
+  font-weight: 600;
+  position: relative;
+  left: 20px;
+  margin-top: 35px;
+}
+
+.movie-result p {
+  position: relative;
+  left: 30px;
+}
+
+#main div:last-child {
+  margin-bottom: 40px;
+  border-bottom: none;
+}
+
+
 

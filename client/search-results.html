@@ -16,24 +16,15 @@
       <img class="icon-movie" src="./image/movie.svg" alt="Movie Icon">
     </a>
     <input type="text" id="search-area" placeholder="Type the Keywords to Search for Movies...">
-    <a href="./search-results.html">
-      <img id="search-button" src="./image/search.svg" alt="Search Icon">
-    </a>
-  </header>
-  <section class="genres">
     <div>
-      <ul id="genre-list">
-        <li class="all-list">全部</li>
-      </ul>
+      <img id="search-button" src="./image/search.svg" alt="Search Icon">
     </div>
-  </section>
-  <section id="movies"></section>
+  </header>
+  <section id="main"></section>
   <footer>❤︎ Made with Love @ThoughtWorks.</footer>
   <script type="text/javascript" src="./scripts.js"></script>
   <script>
     window.onload = () => {
-      renderGenre(getGenre(movieList));
-      renderMovie(movieList);
       addEvents();
     }
   </script>
