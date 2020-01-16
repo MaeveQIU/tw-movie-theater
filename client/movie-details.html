@@ -16,17 +16,26 @@
       <img class="icon-movie" src="./image/movie.svg" alt="Movie Icon">
     </a>
     <input type="text" id="search-area" placeholder="Type the Keywords to Search for Movies...">
-    <div>
-      <img id="search-button" src="./image/search.svg" alt="Search Icon">
-    </div>
+    <a href="./search-results.html">
+      <input type="image" id="search-button" src="./image/search.svg">
+    </a>
   </header>
-  <section id="main"></section>
+  <section id="movie-item">
+    <div id="info"></div>
+    <div id="summary"></div>
+    <div class="reviews">
+      <h2>Top 5 Reviews:</h2>
+      <table></table>
+    </div>
+    <div id="recommendation"></div>
+  </section>
   <footer>❤︎ Made with Love @ThoughtWorks.</footer>
   <script type="text/javascript" src="./scripts.js"></script>
   <script>
     window.onload = () => {
-      const input = getLocalData("inputs");
-      displayResult(checkResult(input[input.length - 1].value));
+      const movie = getLocalData("movies");
+      const id = getMovieId(movie[movie.length - 1].title);
+      renderMovieItem(getMovieData(id));
       addEvents();
     }
   </script>

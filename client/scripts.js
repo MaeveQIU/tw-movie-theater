@@ -7,14 +7,14 @@ const getData = (start, count) => {
   }
 }
 
-const movieList = getData(0, 8).subjects;
+const movieList = getData(0, 40).subjects;
 
 const getGenre = movieList => {
   let newList = [];
   movieList.forEach(element => {
     element.genres.forEach(item => {
       if (!newList.includes(item)) {
-        newList.push(item)
+        newList.push(item);
       }
     });
   });
@@ -36,8 +36,10 @@ const renderMovie = movieList => {
     const newMovie = document.createElement("div");
     newMovie.innerHTML = `
     <img src=${element.images.small}>
-    <p>${element.title}</p>
-    <p>Rating: ${element.rating.average}</p>`
+    <a href="./movie-details.html">
+      <p class="title">${element.title}</p>
+    </a>
+    <p class="rating">Rating: ${element.rating.average}</p>`
     document.getElementById("movies").appendChild(newMovie)
   });
 }
@@ -46,7 +48,7 @@ const clearList = node => {
   document.getElementById(node).innerHTML = "";
 }
 
-const filterList = (movieList, genre) => {
+const filterList = genre => {
   return movieList.filter(element => element.genres.includes(genre));
 }
 
@@ -58,16 +60,16 @@ const postInputData = () => {
   xhr.send(`value=${value}`);
 }
 
-const getInputData = () => {
+const getLocalData = database => {
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", `http://localhost:3000/inputs`, false);
+  xhr.open("GET", `http://localhost:3000/${database}`, false);
   xhr.send();
   if (xhr.readyState === 4 && xhr.status === 200) {
     return JSON.parse(xhr.responseText);
   }
 }
 
-const checkResult = (movieList, input) => {
+const checkResult = input => {
   if (input !== "") {
     return movieList.filter(element => element.title.includes(input));
   }
@@ -83,7 +85,9 @@ const displayResult = resultArr => {
       result.setAttribute("class", "movie-result")
       result.innerHTML = `
       <img src=${element.images.small}>
-      <p class="title">${element.title}</p>
+      <a href="./movie-details.html">
+        <p class="title">${element.title}</p>
+      </a>
       <p>Rating: ${element.rating.average}</p>
       <p>Year: ${element.year}</p>
       <p>Directors: ${element.directors.map(item => item.name_en).join(", ")}</p>
@@ -103,23 +107,74 @@ const displayResult = resultArr => {
   }
 }
 
+const getMovieId = movieTitle => {
+  return movieList.filter(element => element.title === movieTitle)[0].id;
+}
+
+const getMovieData = (movieId) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", `http://127.0.0.1:8888/v2/movie/subject/${movieId}`, false);
+  xhr.send();
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    return JSON.parse(xhr.responseText);
+  }
+}
+
+const renderMovieItem = (movieItem) => {
+  document.getElementById("info").innerHTML = `
+    <img src="${movieItem.images.small}">
+    <p class="title">${movieItem.title}</p>
+    <p>Rating: ${movieItem.rating.average}</p>
+    <p>Year: ${movieItem.year}</p>
+    <p>Directors: ${movieItem.directors.map(item => item.name_en).join(", ")}</p>
+    <p>Casts: ${movieItem.casts.map(item => item.name_en).join(", ")}</p>
+    <p>Duration: ${movieItem.durations[0]}
+    <p>Country: ${movieItem.countries[0]}
+    <p>Genres: ${movieItem.genres.join(", ")}`
+
+  document.getElementById("summary").innerHTML = `
+    <h2>Summary: </h2>
+    <p>${movieItem.summary}</p>`
+
+  movieItem.popular_reviews.slice(0, 5).forEach(element => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>
+        <img src=${element.author.avatar}>
+        <p>${element.author.name}</p>
+      </td>
+      <td class="comment">${element.summary}</td>`
+    document.querySelector("table").appendChild(newRow);
+  });
+}
+
+const postMovieData = (event) => {
+  const title = event.target.innerText;
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:3000/movies", false);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(`title=${title}`);
+}
+
 const addEvents = () => {
   document.addEventListener("click", event => {
-    if(event.target.className === "all-list") {
+    if (event.target.className === "all-list") {
       clearList("movies");
       renderMovie(movieList);
     }
-    if(event.target.className === "genre-list") {
-      let target = filterList(movieList, event.target.id);
+    if (event.target.className === "genre-list") {
+      let target = filterList(event.target.id);
       clearList("movies");
       renderMovie(target);
     }
-    if(event.target.id === "search-button") {
+    if (event.target.id === "search-button") {
       postInputData();
-      const input = getInputData();
+      const input = getLocalData("inputs");
       clearList("main");
-      displayResult(checkResult(movieList, input[input.length - 1].value));
+      displayResult(checkResult(input[input.length - 1].value));
     }
-
+    if (event.target.className === "title") {
+      postMovieData(event);
+    }
   });
 }

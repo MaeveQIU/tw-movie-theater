@@ -87,12 +87,7 @@ a {
   box-shadow: 4px 4px 5px 2px #252524d0;
 }
 
-#movies p:nth-child(2) {
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-#movies p:last-child {
+#movies .rating {
   font-size: 16px;
   margin-top: -10px;
 }
@@ -149,5 +144,80 @@ footer {
   border-bottom: none;
 }
 
+#movie-item {
+  margin: 50px 65px 100px 65px;
+}
 
+#info {
+  display: flow-root;
+}
+
+#info img {
+  float: left;
+  margin-right: 40px;
+  margin-left: 30px;
+  border-right: 1px dotted #000;
+  padding-right: 40px;
+}
+
+#info .title {
+  font-size: 28px;
+  font-weight: 600;
+  position: relative;
+  left: 20px;
+  margin-top: 35px;
+}
+
+#info p {
+  position: relative;
+  left: 30px;
+  font-size: 16px;
+}
+
+#summary {
+  margin-top: 40px;
+  margin-left: 80px;
+  width: 90%;
+  border-top: 1px dotted #000;
+  padding-top: 10px;
+}
+
+#summary p {
+  line-height: 28px;
+  padding-left: 20px;
+}
+
+.reviews {
+  margin-top: 40px;
+  margin-left: 80px;
+  width: 90%;
+  border-top: 1px dotted #000;
+  padding-top: 10px;
+}
+
+.reviews tr {
+  vertical-align: top;
+}
+
+.reviews td {
+  padding-left: 20px;
+}
+
+.reviews p {
+  font-size: 12px;
+  margin-top: 0;
+  text-align: left;
+}
+
+.reviews .comment {
+  margin-top: 0;
+}
+
+.recommendation {
+  margin-top: 40px;
+  margin-left: 80px;
+  width: 90%;
+  border-top: 1px dotted #000;
+  padding-top: 10px;
+}
 
