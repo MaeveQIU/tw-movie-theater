@@ -25,6 +25,8 @@
   <script type="text/javascript" src="./scripts.js"></script>
   <script>
     window.onload = () => {
+      const input = getInputData();
+      displayResult(checkResult(movieList, input[input.length - 1].value));
       addEvents();
     }
   </script>

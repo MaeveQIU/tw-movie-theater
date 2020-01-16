@@ -7,7 +7,7 @@ const getData = (start, count) => {
   }
 }
 
-const movieList = getData(0, 40).subjects;
+const movieList = getData(0, 8).subjects;
 
 const getGenre = movieList => {
   let newList = [];
@@ -50,9 +50,30 @@ const filterList = (movieList, genre) => {
   return movieList.filter(element => element.genres.includes(genre));
 }
 
-const checkResult = movieList => {
-  const input = document.getElementById("search-area").value;
-  return movieList.filter(element => element.title.includes(input));
+const postInputData = () => {
+  const value = document.getElementById("search-area").value;
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:3000/inputs", false);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(`value=${value}`);
+}
+
+const getInputData = () => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", `http://localhost:3000/inputs`, false);
+  xhr.send();
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    return JSON.parse(xhr.responseText);
+  }
+}
+
+const checkResult = (movieList, input) => {
+  if (input !== "") {
+    return movieList.filter(element => element.title.includes(input));
+  }
+  else {
+    return [];
+  }
 }
 
 const displayResult = resultArr => {
@@ -94,8 +115,10 @@ const addEvents = () => {
       renderMovie(target);
     }
     if(event.target.id === "search-button") {
-      clearList("main")
-      displayResult(checkResult(movieList));
+      postInputData();
+      const input = getInputData();
+      clearList("main");
+      displayResult(checkResult(movieList, input[input.length - 1].value));
     }
 
   });
