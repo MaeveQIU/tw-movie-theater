@@ -120,6 +120,19 @@ const getMovieData = (movieId) => {
   }
 }
 
+const calculateScoreAndRank = movieItem => {
+  const movieDatabase = getLocalData("recommender");
+  movieDatabase.forEach(element => {
+    let score = 0;
+    score += (movieItem.year === element.year) ? 1 : 0;
+    score += (movieItem.countries === element.countries) ? 2 : 0;
+    score += (movieItem.genres.filter(item => element.genres.includes(item))).length * 3;
+    score += (movieItem.tags.filter(item => element.tags.includes(item))).length * 4;
+    element.score = score;
+  });
+  return movieDatabase.sort((x, y) => y.score - x.score).slice(1, 6);
+}
+
 const renderMovieItem = (movieItem) => {
   document.getElementById("info").innerHTML = `
     <img src="${movieItem.images.small}">
@@ -145,6 +158,15 @@ const renderMovieItem = (movieItem) => {
       </td>
       <td class="comment">${element.summary}</td>`
     document.querySelector("table").appendChild(newRow);
+  });
+
+  calculateScoreAndRank(movieItem).forEach(item => {
+    const newMovie = document.createElement("div");
+    newMovie.innerHTML = `
+    <img src=${item.image}>
+    <p>${item.title}</p>
+    <p>${item.year}</p>`
+    document.getElementById("recommended-movies").appendChild(newMovie);
   });
 }
 
